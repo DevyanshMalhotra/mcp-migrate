@@ -30,6 +30,9 @@ class DeprecatedSSETransport(Rule):
             out: list[Finding] = []
             seen = set()
 
+            # search_wire, not search_code: `app.get("/sse", ...)` is a route, and
+            # routes are string literals that search_code would skip. A comment
+            # saying "we dropped SSE" is not a route either way.
             # Distinctive SDK/configuration signals do not need an MCP-surface gate.
             for f, line, text in project.search_wire(TS_STRONG_RX):
                 seen.add((f.path, line))
